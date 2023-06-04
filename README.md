@@ -70,7 +70,7 @@ To run the code for the API project, follow these steps:
 - Change into the project directory: `cd <project-directory>`.
 - Set up the environment variables by creating a `.env` file and populating it with the necessary values.
 - Build a Docker image for the project: `gcloud builds submit --tag gcr.io/<project-id>/calorties-api`
-- Deploy the Docker image to Cloud Run: `gcloud run deploy <service-name> --image gcr.io/<project-id>/calorties-api --platform managed`
+- Deploy the Docker image to Cloud Run: `gcloud run deploy <service-name> --image gcr.io/<project-id>/calorties-api --platform managed --region <region>`
 - Follow the prompts to choose the project, region, and service name for the deployment.
 - Once the deployment is complete, you will be provided with the URL for your API.
 
