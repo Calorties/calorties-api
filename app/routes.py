@@ -1,5 +1,6 @@
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time,timedelta
 from typing import Optional
+import time as time2
 
 from fastapi import APIRouter, Body, Depends, File, HTTPException, Query, UploadFile
 from sqlalchemy import func
@@ -77,13 +78,12 @@ def create_user(
 
 @router.put("/users/{user_id}")
 def update_user(
-    user_id: int,
     user_update: UserUpdate,
     db: Session = Depends(get_db),
     current_account: Account = Depends(get_current_account),
 ):
     # Check if the user exists
-    user = db.query(User).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.account_id == current_account.id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
@@ -233,7 +233,7 @@ def record_calorie_consumption(
 ):
     # Upload the image file to Google Cloud Storage (GCS) and get the public URL
     if image:
-        filename = f"food_inference/{current_account.username}/{int(time.time())}"
+        filename = f"food_inference/{current_account.username}/{int(time2.time())}"
         filename = filename + "." + image.filename.split(".")[-1]
         image_url = upload_to_gcs(image, filename)
     else:
@@ -353,7 +353,7 @@ def get_weekly_calorie_summary(
         .filter(
             Calorie.user_id == user.id,
             Calorie.created_at >= start_date,
-            Calorie.created_at <= end_date,
+            Calorie.created_at < end_date + timedelta(1),
         )
         .group_by(func.DATE(Calorie.created_at))
         .order_by(func.DATE(Calorie.created_at))

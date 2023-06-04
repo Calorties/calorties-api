@@ -45,13 +45,13 @@ The files and directories in the project are structured as follows:
 To run the code for the API project, follow these steps:
 
 #### Uvicorn
-- Ensure you have Python installed on your system.
+- Ensure you have Python installed or activated virtual environment on your system.
 - Clone the Git repository using the command: `git clone <repository-url>`
 - Change into the project directory: `cd <project-directory>`
 - Set up the environment variables by creating a `.env` file and populating it with the necessary values.
-- Apply environment variables: `source .env && export $(sed '/^#/d' .env | cut -d= -f1)`.
+- Export environment variables to active session: `source .env && export $(sed '/^#/d' .env | cut -d= -f1)`.
 - Install the required Python dependencies by running: `pip install -r requirements.txt`
-- Start the API server using Uvicorn: `uvicorn app.main:app --reload`
+- Start the API server using Uvicorn: `uvicorn app.main:app --port 8080 --reload`
 - The API should now be running locally on `http://localhost:8080`.
 
 #### Docker
