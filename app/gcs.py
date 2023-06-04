@@ -4,7 +4,7 @@ from google.cloud import storage
 
 def upload_to_gcs(file: UploadFile, filename) -> str:
     # Create a GCS client
-    key_path = ".gcs-client.json"
+    key_path = "service-account.json"
     client = storage.Client.from_service_account_json(key_path)
 
     # Set up GCS bucket and filename

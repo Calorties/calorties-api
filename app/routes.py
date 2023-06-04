@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.gcs import upload_to_gcs
 from app.models import Account, Calorie, Food, User
-from app.prediction import predict_food_id
+from app.prediction import predict_food
 from app.schemas import (
     AccountCreate,
     FoodDetail,
@@ -56,7 +56,7 @@ def create_user(
     db: Session = Depends(get_db),
     current_account: Account = Depends(get_current_account),
 ):
-    existing_user = db.query(User).filter(User.id == current_account.id).first()
+    existing_user = db.query(User).filter(User.account_id == current_account.id).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="User already registered")
 
@@ -239,10 +239,10 @@ def record_calorie_consumption(
     else:
         raise HTTPException(status_code=400, detail="No image provided")
 
-    food_id = predict_food_id(image_url)
+    food = predict_food(image)
 
     # Check if the food type exists
-    food = db.query(Food).filter(Food.id == food_id).first()
+    food = db.query(Food).filter(Food.name == food).first()
     if not food:
         raise HTTPException(status_code=404, detail="Food not found")
 
@@ -254,7 +254,7 @@ def record_calorie_consumption(
     # Create a new calorie record
     new_calorie = Calorie(
         user_id=user.id,
-        food_id=food_id,
+        food_id=food.id,
         jumlah_kalori=food.jumlah_kalori,
         food_image_url=image_url,
     )

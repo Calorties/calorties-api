@@ -3,12 +3,11 @@
 ### Directory Structure
 The project directory structure is organized as follows:
 ```
-- .env-vars.json
-- .gcs-client.json
 - .gitignore
 - .env
 - .flake8
 - .pre-commit-config.yaml
+- service-account.json
 - Dockerfile
 - requirements.txt
 - app/
@@ -23,12 +22,12 @@ The project directory structure is organized as follows:
 ```
 The files and directories in the project are structured as follows:
 
-- `.env-vars.json`: Contains environment variables used by the application.
-- `.gcs-client.json`: Client credentials file for interacting with Google Cloud Storage (GCS).
+
 - `.gitignore`: Specifies which files and directories should be ignored by Git version control.
 - `.env`: Stores environment variables specific to the development or production environment.
 - `.flake8`: Configuration settings for the Flake8 code linter.
 - `.pre-commit-config.yaml`: Configuration file for pre-commit hooks.
+- `service-account.json`: Client credentials file for interacting with Google Cloud Storage (GCS).
 - `Dockerfile`: Used to create a Docker image for the application.
 - `requirements.txt`: Lists the Python dependencies required by the application.
 - `app/`: Directory containing the application-specific code.
@@ -65,7 +64,7 @@ To run the code for the API project, follow these steps:
 
 #### Cloud Run
 - Set up a Google Cloud Platform (GCP) project and enable the Cloud Run API.
-- Ensure you have the Google Cloud SDK (gcloud) installed or actiated google cloud shell on your system.
+- Ensure you have the Google Cloud SDK (gcloud) installed or activated google cloud shell on your system.
 - Clone the Git repository using the command: `git clone <repository-url>`.
 - Change into the project directory: `cd <project-directory>`.
 - Set up the environment variables by creating a `.env` file and populating it with the necessary values.
