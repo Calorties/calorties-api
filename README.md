@@ -65,7 +65,7 @@ To run the code for the API project, follow these steps:
 
 #### Cloud Run
 - Set up a Google Cloud Platform (GCP) project and enable the Cloud Run API.
-- Ensure you have the Google Cloud SDK (gcloud) installed on your system or you chan activate google cloud shell instead.
+- Ensure you have the Google Cloud SDK (gcloud) installed or actiated google cloud shell on your system.
 - Clone the Git repository using the command: `git clone <repository-url>`.
 - Change into the project directory: `cd <project-directory>`.
 - Set up the environment variables by creating a `.env` file and populating it with the necessary values.
