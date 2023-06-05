@@ -381,17 +381,3 @@ def get_weekly_calorie_summary(
         )
 
     return summary_list
-
-
-# Dummy API - To be implemented
-# This endpoint will eventually perform ML inference to determine the food_id
-# For now, it randomly selects a food_id from the Food table
-# Process the food image and perform machine learning inference
-@router.post("/inference/food-id")
-def infer_food_id(image_url: str, db: Session = Depends(get_db)):
-    food = db.query(Food).order_by(func.random()).first()
-
-    if not food:
-        raise HTTPException(status_code=404, detail="No food found")
-
-    return {"food_id": food.id}
