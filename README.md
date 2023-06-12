@@ -47,7 +47,7 @@ To run the code for the API project, follow these steps:
 - Ensure you have Python installed or activated virtual environment on your system.
 - Clone the Git repository using the command: `git clone <repository-url>`
 - Change into the project directory: `cd <project-directory>`
-- Set up the environment variables by creating a `.env` file and populating it with the necessary values.
+- Set up the environment variables by creating a `.env` file (copy from `.env.example`) and populating it with the necessary values.
 - Export environment variables to active session: `source .env && export $(sed '/^#/d' .env | cut -d= -f1)`.
 - Install the required Python dependencies by running: `pip install -r requirements.txt`
 - Start the API server using Uvicorn: `uvicorn app.main:app --port 8080 --reload`
@@ -57,7 +57,7 @@ To run the code for the API project, follow these steps:
 - Ensure you have Docker installed on your system.
 - Clone the Git repository using the command: `git clone <repository-url>`
 - Change into the project directory: `cd <project-directory>`
-- Set up the environment variables by creating a `.env` file and populating it with the necessary values.
+- Set up the environment variables by creating a `.env` file (copy from `.env.example`) and populating it with the necessary values.
 - Build the Docker image by running: `docker build -t calorties-api .`
 - Run the Docker container: `docker run -p 8080:8080 calorties-api`
 - The API should now be running locally on `http://localhost:8080`.
@@ -67,7 +67,7 @@ To run the code for the API project, follow these steps:
 - Ensure you have the Google Cloud SDK (gcloud) installed or activated google cloud shell on your system.
 - Clone the Git repository using the command: `git clone <repository-url>`.
 - Change into the project directory: `cd <project-directory>`.
-- Set up the environment variables by creating a `.env` file and populating it with the necessary values.
+- Set up the environment variables by creating a `.env` file (copy from `.env.example`) and populating it with the necessary values.
 - Build a Docker image for the project: `gcloud builds submit --tag gcr.io/<project-id>/calorties-api`
 - Deploy the Docker image to Cloud Run: `gcloud run deploy <service-name> --image gcr.io/<project-id>/calorties-api --platform managed --region <region>`
 - Follow the prompts to choose the project, region, and service name for the deployment.
