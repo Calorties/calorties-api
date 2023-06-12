@@ -1,15 +1,13 @@
 import os
 
+from app.config import USERNAME, PASSWORD, HOST, PORT, NAME
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-USERNAME = os.getenv("DB_USERNAME")
-PASSWORD = os.getenv("DB_PASSWORD")
-HOST = os.getenv("DB_HOST")
-PORT = os.getenv("DB_PORT")
 
 SQLALCHEMY_DATABASE_URL = (
-    f"mysql+mysqlconnector://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/db-calorie-tracking"
+    f"mysql+mysqlconnector://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{NAME}"
 )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)

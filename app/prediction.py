@@ -1,9 +1,13 @@
+import os
+
+from app.config import INFERENCE
+
 import requests
 from fastapi import HTTPException, UploadFile
 
 
 def predict_food(image_file: UploadFile):
-    infer_food_endpoint = "https://calorties-inference-lqr424edxa-et.a.run.app/predict"
+    infer_food_endpoint = INFERENCE
 
     headers = {
         "accept": "application/json",

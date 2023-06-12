@@ -1,3 +1,7 @@
+import os
+
+from app.config import BUCKET
+
 from fastapi import UploadFile
 from google.cloud import storage
 
@@ -8,7 +12,7 @@ def upload_to_gcs(file: UploadFile, filename) -> str:
     client = storage.Client.from_service_account_json(key_path)
 
     # Set up GCS bucket and filename
-    bucket_name = "calorties"
+    bucket_name = BUCKET
 
     # Upload the file to GCS
     bucket = client.bucket(bucket_name)
