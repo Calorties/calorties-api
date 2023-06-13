@@ -46,6 +46,7 @@ class FoodDetail(BaseModel):
     food_id: int
     name: str
     jumlah_kalori: int
+    thumbnail: Optional[str] = Field(None, min_length=1, max_length=255)
 
 
 class FoodSummary(BaseModel):

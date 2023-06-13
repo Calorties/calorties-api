@@ -76,6 +76,29 @@ def create_user(
     return {"message": "User created successfully", "user_id": new_user.id}
 
 
+@router.get("/me")
+def get_profile(
+    db: Session = Depends(get_db),
+    current_account: Account = Depends(get_current_account),
+):
+    account = db.query(Account).filter(Account.id == current_account.id).first()
+    user = db.query(User).filter(User.account_id == current_account.id).first()
+
+    if not user:
+        return {"message": "User not found"}
+
+    return {
+        "nama": user.nama,
+        "email": user.email,
+        "username": account.username,
+        "password": "********",
+        "birthdate": user.birthdate,
+        "gender": user.gender,
+        "tinggi_badan": user.tinggi_badan,
+        "berat_badan": user.berat_badan,
+        "profile_image_url": user.profile_image_url
+    }
+
 @router.put("/users/{user_id}")
 def update_user(
     user_update: UserUpdate,
@@ -211,7 +234,7 @@ def get_food_by_day(
         food = db.query(Food).filter(Food.id == calorie.food_id).first()
         if food:
             food_detail = FoodDetail(
-                food_id=food.id, name=food.name, jumlah_kalori=food.jumlah_kalori
+                food_id=food.id, name=food.name, jumlah_kalori=food.jumlah_kalori, thumbnail=food.thumbnail
             )
             food_details.append(food_detail)
 
@@ -377,6 +400,7 @@ def get_weekly_calorie_summary(
             {
                 "date": dt,
                 "total_kalori_masuk": summary_dict.get(dt.strftime("%Y%m%d"), 0),
+                "thumbnail": "https://storage.googleapis.com/calorties-prod/thumbnail.avif"
             }
         )
 
