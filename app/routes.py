@@ -1,4 +1,4 @@
-from datetime import date, datetime, time,timedelta
+from datetime import date, datetime, time, timedelta
 from typing import Optional
 import time as time2
 
@@ -223,7 +223,10 @@ def get_food_by_day(
 
     calories = (
         db.query(Calorie)
-        .filter(func.DATE(func.timezone('UTC+7', Calorie.created_at)) == date, Calorie.user_id == user_id)
+        .filter(
+            func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')) == date,
+            Calorie.user_id == user_id
+        )
         .all()
     )
 
@@ -328,8 +331,8 @@ def get_daily_calorie_summary(
         db.query(func.sum(Calorie.jumlah_kalori).label("total_kalori_masuk"))
         .filter(
             Calorie.user_id == user.id,
-            func.timezone('UTC+7', Calorie.created_at) >= start_date,
-            func.timezone('UTC+7', Calorie.created_at) <= end_date,
+            func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')) >= start_date,
+            func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')) <= end_date,
         )
         .first()
     )
@@ -370,16 +373,16 @@ def get_weekly_calorie_summary(
     # Query the database to get the calorie consumption summary for the week
     summary = (
         db.query(
-            func.DATE(func.timezone('UTC+7', Calorie.created_at)).label("daily"),
+            func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')).label("daily"),
             func.sum(Calorie.jumlah_kalori).label("total_kalori_masuk"),
         )
         .filter(
             Calorie.user_id == user.id,
-            func.timezone('UTC+7', Calorie.created_at) >= start_date,
-            func.timezone('UTC+7', Calorie.created_at) < end_date + timedelta(1),
+            func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')) >= start_date,
+            func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')) <= end_date,
         )
-        .group_by(func.DATE(func.timezone('UTC+7', Calorie.created_at)))
-        .order_by(func.DATE(func.timezone('UTC+7', Calorie.created_at)))
+        .group_by(func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')))
+        .order_by(func.DATE(func.CONVERT_TZ(Calorie.created_at, '+00:00', '+07:00')))
         .all()
     )
 
