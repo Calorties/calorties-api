@@ -99,7 +99,7 @@ def get_profile(
         "profile_image_url": user.profile_image_url
     }
 
-@router.put("/users/{user_id}")
+@router.put("/users")
 def update_user(
     user_update: UserUpdate,
     db: Session = Depends(get_db),
@@ -167,7 +167,7 @@ def upload_profile_image(
     return {"message": "Profile image uploaded successfully", "image_url": image_url}
 
 
-@router.put("/users/profile-image/{user_id}")
+@router.put("/users/profile-image")
 def update_profile_image(
     profile_image: UploadFile = File(...),
     db: Session = Depends(get_db),
@@ -223,7 +223,7 @@ def get_food_by_day(
 
     calories = (
         db.query(Calorie)
-        .filter(func.DATE(Calorie.created_at) == date, Calorie.user_id == user_id)
+        .filter(func.DATE(func.timezone('UTC+7', Calorie.created_at)) == date, Calorie.user_id == user_id)
         .all()
     )
 
@@ -328,8 +328,8 @@ def get_daily_calorie_summary(
         db.query(func.sum(Calorie.jumlah_kalori).label("total_kalori_masuk"))
         .filter(
             Calorie.user_id == user.id,
-            Calorie.created_at >= start_date,
-            Calorie.created_at <= end_date,
+            func.timezone('UTC+7', Calorie.created_at) >= start_date,
+            func.timezone('UTC+7', Calorie.created_at) <= end_date,
         )
         .first()
     )
@@ -370,16 +370,16 @@ def get_weekly_calorie_summary(
     # Query the database to get the calorie consumption summary for the week
     summary = (
         db.query(
-            func.DATE(Calorie.created_at).label("daily"),
+            func.DATE(func.timezone('UTC+7', Calorie.created_at)).label("daily"),
             func.sum(Calorie.jumlah_kalori).label("total_kalori_masuk"),
         )
         .filter(
             Calorie.user_id == user.id,
-            Calorie.created_at >= start_date,
-            Calorie.created_at < end_date + timedelta(1),
+            func.timezone('UTC+7', Calorie.created_at) >= start_date,
+            func.timezone('UTC+7', Calorie.created_at) < end_date + timedelta(1),
         )
-        .group_by(func.DATE(Calorie.created_at))
-        .order_by(func.DATE(Calorie.created_at))
+        .group_by(func.DATE(func.timezone('UTC+7', Calorie.created_at)))
+        .order_by(func.DATE(func.timezone('UTC+7', Calorie.created_at)))
         .all()
     )
 
